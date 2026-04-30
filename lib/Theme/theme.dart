@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// theme App
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Color(0xFF1a1a16),
@@ -16,7 +17,7 @@ final darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
     primary: Color.fromARGB(31, 0, 0, 0),
     secondary: Colors.black,
-    surface: Colors.white38,
-    onPrimary: Colors.white38,
+    surface: Colors.black54,
+    onPrimary: Colors.black54,
   ),
 );

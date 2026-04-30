@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:weather/View/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:weather/View/home_screen.dart';
+import 'package:weather/View/login_screen.dart';
 import 'package:weather/Utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,32 +14,40 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Timer _timer;
+
   @override
   void initState() {
-    _timer = Timer(Duration(seconds: 5), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => WeatherAppHomeScreen()),
-        );
-      }
-    });
     super.initState();
+    _timer = Timer(const Duration(seconds: 3), _navigate);
+  }
+
+  void _navigate() {
+    if (!mounted) return;
+    final session = Supabase.instance.client.auth.currentSession;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => session != null
+            ? const WeatherAppHomeScreen()
+            : const LoginScreen(), // ← ถ้ายังไม่ login ไป LoginScreen
+      ),
+    );
   }
 
   @override
   void dispose() {
-    super.dispose();
     _timer.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // ... โค้ดเดิมของ splash screen เหมือนเดิมทุกอย่าง
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 40),
+          padding: const EdgeInsets.symmetric(vertical: 40),
           child: Column(
             children: [
               Center(
@@ -47,28 +57,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: -0.5,
-                    height: 1.2,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Image.asset("assets/img/2.png", height: 350),
-              Spacer(),
+              const Spacer(),
               Center(
                 child: Text(
                   "Get to Know your weather maps and\nradar recipitations forcast",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 17,
-                    fontWeight: FontWeight.w400,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 30),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: buttonColor,
@@ -77,14 +84,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // cancel the timer when the button is pressed
                     _timer.cancel();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WeatherAppHomeScreen(),
-                      ),
-                    );
+                    _navigate();
                   },
                   child: Text(
                     "Get Started",
