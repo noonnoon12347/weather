@@ -19,8 +19,8 @@ class WeatherAppHomeScreen extends ConsumerStatefulWidget {
 
 class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
   final _weatherService = WeatherApiService();
-  final _authService = AuthService();         // ✅ เพิ่ม
-  final _historyService = HistoryService();   // ✅ เพิ่ม
+  final _authService = AuthService();         
+  final _historyService = HistoryService();   
 
   String city = "Bangkok";
   String country = '';
@@ -52,7 +52,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
         isLoading = false;
       });
 
-      // ✅ บันทึก history หลัง fetch สำเร็จ
+
       await _historyService.saveSearch(city, country);
 
     } catch (e) {
@@ -99,7 +99,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
           const SizedBox(width: 25),
           // Search Field
           SizedBox(
-            width: 260, // ✅ ลดขนาดลงนิดให้มีที่ปุ่ม
+            width: 260,
             height: 50,
             child: TextField(
               style: TextStyle(color: Theme.of(context).colorScheme.secondary),
@@ -138,7 +138,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
             ),
           ),
           const Spacer(),
-          // ✅ ปุ่ม History
+          
           IconButton(
             icon: Icon(
               Icons.history,
@@ -168,7 +168,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
               size: 28,
             ),
           ),
-          // ✅ ปุ่ม Logout
+          
           IconButton(
             icon: Icon(
               Icons.logout,
