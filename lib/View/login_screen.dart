@@ -13,7 +13,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _authService = AuthService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLogin = true; // toggle login/register
   bool _isLoading = false;
 
   Future<void> _submit() async {
@@ -23,9 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isLoading = true);
 
-    final error = _isLogin
-        ? await _authService.signIn(email, password)
-        : await _authService.signUp(email, password);
+    final error = await _authService.signIn(email, password);
 
     setState(() => _isLoading = false);
 
@@ -33,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error), backgroundColor: Colors.red),
+        SnackBar(content: Text(error), backgroundColor: Colors.blue),
       );
     } else {
       Navigator.pushReplacement(
@@ -53,8 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/icons/logo11.png',
+                width: 90,
+                height: 90,
+              ),
+              const SizedBox(height: 20),
               Text(
-                _isLogin ? "Welcome Back" : "Create Account",
+                "Welcome Back",
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -65,19 +68,30 @@ class _LoginScreenState extends State<LoginScreen> {
               // Email
               TextField(
                 controller: _emailController,
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: "Email",
-                  labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
-                  prefixIcon: Icon(Icons.email, color: Theme.of(context).colorScheme.surface),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
               ),
@@ -86,23 +100,34 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 decoration: InputDecoration(
                   labelText: "Password",
-                  labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
-                  prefixIcon: Icon(Icons.lock, color: Theme.of(context).colorScheme.surface),
+                  labelStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 30),
-              // Submit Button
+              // Login Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -116,25 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : Text(
-                          _isLogin ? "Login" : "Register",
-                          style: const TextStyle(
+                      : const Text(
+                          "Login",
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              // Toggle Login/Register
-              TextButton(
-                onPressed: () => setState(() => _isLogin = !_isLogin),
-                child: Text(
-                  _isLogin
-                      ? "Don't have an account? Register"
-                      : "Already have an account? Login",
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 ),
               ),
             ],

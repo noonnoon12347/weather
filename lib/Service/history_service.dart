@@ -5,9 +5,9 @@ final supabase = Supabase.instance.client;
 class HistoryService {
   Future<void> saveSearch(String cityName, String country) async {
     final userId = supabase.auth.currentUser?.id;
-    if (userId == null) return; // ไม่ login ไม่บันทึก
+    if (userId == null) return;
 
-    // ไม่บันทึกซ้ำภายใน 1 นาที
+    
     await supabase.from('search_history').insert({
       'user_id': userId,
       'city_name': cityName,
